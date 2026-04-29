@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0A0E0D" />
+  <title>Free SaaS UI/UX Audit — Geex Web</title>
+  <meta name="description" content="Free 10-minute Loom audit of your site, landing page, or app. SaaS-CRO designer flags conversion leaks, mobile breakage, and trust gaps. 48-hour turnaround. No pitch." />
+
+  <link rel="icon" type="image/png" href="uploads/Geexweb-Logo.png" />
+  <link rel="apple-touch-icon" href="uploads/Geexweb-Logo.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Free SaaS UI/UX Audit — Geex Web" />
+  <meta property="og:description" content="Free 10-minute Loom audit of your site, landing page, or app. 48-hour turnaround. No pitch." />
+  <meta property="og:image" content="uploads/Hero-bg-image-2.jpg" />
+  <meta property="og:site_name" content="Geex Web" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free SaaS UI/UX Audit — Geex Web" />
+  <meta name="twitter:description" content="Free 10-minute Loom audit of your site, landing page, or app. 48-hour turnaround. No pitch." />
+  <meta name="twitter:image" content="uploads/Hero-bg-image-2.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0A0E0D;
+      --surface: rgba(255,255,255,0.025);
+      --surface-raised: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.18);
+      --text: #FFFFFF;
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-muted: rgba(255,255,255,0.4);
+      --accent: #3EE489;
+      --accent-tint: rgba(62,228,137,0.08);
+      --accent-border: rgba(62,228,137,0.22);
+      --error: #EF4444;
+      --radius-card: 16px;
+      --radius-input: 12px;
+      --radius-pill: 999px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    #root > * { position: relative; z-index: 1; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.7); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes bounceArrow {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes overlayIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    /* Tablet */
+    @media (max-width: 900px) {
+      .nav-root { padding: 0 24px !important; }
+      .form-card { padding: 36px 32px !important; }
+      .testimonials-section { padding: 64px 28px !important; }
+      .testimonials-header { flex-direction: column !important; align-items: flex-start !important; }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .faq-section { padding: 56px 28px 96px !important; }
+    }
+
+    /* Phone */
+    @media (max-width: 640px) {
+      .nav-root { padding: 0 20px !important; height: 60px !important; }
+      .hero-section { min-height: auto !important; padding-top: 110px !important; padding-bottom: 80px !important; }
+      .form-section { padding-top: 56px !important; padding-bottom: 40px !important; }
+      .form-card { padding: 28px 22px !important; border-radius: 18px !important; }
+      .audit-type-grid { grid-template-columns: 1fr !important; }
+      .form-grid-2col { grid-template-columns: 1fr !important; }
+      .testimonials-section { padding: 56px 20px !important; }
+      .testimonials-grid { grid-template-columns: 1fr !important; }
+      .faq-section { padding: 48px 20px 80px !important; }
+      .faq-book-card { padding: 28px 24px !important; }
+      .footer-root { padding: 24px 20px !important; flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useRef, useEffect } = React;
+
+/* ── Icons ── */
+const IconCheck = ({ size = 16, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+    <path d="M3 8l3.5 3.5L13 5" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+const IconArrowRight = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+const IconChevronDown = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+const IconStar = () => (
+  <svg width="13" height="13" viewBox="0 0 14 14" fill="#3EE489">
+    <path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.5l-3.8 2L4.5 7.5 1 5h4.5z"/>
+  </svg>
+);
+const IconBigCheck = () => (
+  <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+    <circle cx="28" cy="28" r="28" fill="rgba(62,228,137,0.12)"/>
+    <circle cx="28" cy="28" r="20" fill="rgba(62,228,137,0.15)"/>
+    <path d="M18 28l7 7 13-14" stroke="#3EE489" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+const IconGlobe = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/>
+    <ellipse cx="11" cy="11" rx="4" ry="9" stroke="currentColor" strokeWidth="1.4"/>
+    <path d="M2 11h18" stroke="currentColor" strokeWidth="1.4"/>
+  </svg>
+);
+const IconLayout = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <rect x="2" y="2" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.4"/>
+    <path d="M2 8h18M8 8v12" stroke="currentColor" strokeWidth="1.4"/>
+  </svg>
+);
+const IconPhone = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <rect x="6" y="2" width="10" height="18" rx="3" stroke="currentColor" strokeWidth="1.4"/>
+    <circle cx="11" cy="17" r="1" fill="currentColor"/>
+    <path d="M9 5h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+  </svg>
+);
+const IconDownload = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+    <path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M2 12h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+  </svg>
+);
+const IconClose = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+    <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+  </svg>
+);
+const IconCalendar = () => (
+  <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+    <rect x="2" y="4" width="18" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/>
+    <path d="M2 9h18M7 2v4M15 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+  </svg>
+);
+
+/* ── Avatar ── */
+const Avatar = ({ size = 44 }) => (
+  <div style={{
+    width: `${size}px`, height: `${size}px`, borderRadius: '50%', flexShrink: 0,
+    border: '2px solid rgba(62,228,137,0.3)', overflow: 'hidden',
+  }}>
+    <img src="uploads/PFP-2nd.jpg" alt="Haseeb Ansari"
+      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+  </div>
+);
+
+/* ── PDF Gate Modal ── */
+function PDFGateModal({ onClose }) {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const [done, setDone] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) { setError('Please enter a valid email address.'); return; }
+    const link = document.createElement('a');
+    link.href = 'uploads/Geex-Web-10-Min-SaaS-UIUX-Audit.pdf';
+    link.download = 'Geex-Web-SaaS-UIUX-Audit-Guide.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setDone(true);
+  };
+
+  const inp = {
+    width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
+    borderRadius: '10px', color: 'var(--text)', fontFamily: 'inherit', fontSize: '15px',
+    padding: '13px 16px', outline: 'none', transition: 'border-color 200ms, background 200ms',
+  };
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', animation: 'overlayIn 0.2s ease' }}>
+      <div onClick={onClose} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }} />
+      <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '480px', background: '#111614', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '24px', padding: '40px', animation: 'modalIn 0.3s ease', boxShadow: '0 32px 80px rgba(0,0,0,0.6)' }}>
+        <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', borderRadius: '8px', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#fff'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'var(--text-muted)'; }}>
+          <IconClose />
+        </button>
+
+        {!done ? (
+          <>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'var(--accent-tint)', border: '1px solid var(--accent-border)', borderRadius: '10px', padding: '10px 14px', marginBottom: '28px' }}>
+              <svg width="28" height="36" viewBox="0 0 28 36" fill="none">
+                <rect width="28" height="36" rx="4" fill="rgba(62,228,137,0.15)"/>
+                <path d="M6 8h16M6 14h16M6 20h10" stroke="#3EE489" strokeWidth="1.5" strokeLinecap="round"/>
+                <rect x="14" y="24" width="8" height="8" rx="2" fill="#3EE489" opacity="0.8"/>
+                <path d="M16.5 28l1.5 1.5 2-2.5" stroke="#0A0E0D" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--accent)' }}>Free PDF Guide</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '1px' }}>10-Min SaaS UI/UX Audit</div>
+              </div>
+            </div>
+            <h2 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '10px', lineHeight: 1.15 }}>Audit your own site.<br />No strings attached.</h2>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '28px' }}>Drop your email and the guide downloads instantly — a step-by-step checklist you can run yourself in under 10 minutes.</p>
+            <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <input type="text" value={name} placeholder="Your first name (optional)" onChange={e => setName(e.target.value)} style={inp}
+                onFocus={e => { e.target.style.borderColor = '#3EE489'; e.target.style.background = 'rgba(62,228,137,0.05)'; }}
+                onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.background = 'rgba(255,255,255,0.04)'; }} />
+              <input type="email" value={email} placeholder="your@email.com" onChange={e => { setEmail(e.target.value); setError(''); }}
+                style={{ ...inp, borderColor: error ? 'var(--error)' : undefined }}
+                onFocus={e => { e.target.style.borderColor = '#3EE489'; e.target.style.background = 'rgba(62,228,137,0.05)'; }}
+                onBlur={e => { e.target.style.borderColor = error ? 'var(--error)' : 'var(--border)'; e.target.style.background = 'rgba(255,255,255,0.04)'; }} />
+              {error && <span style={{ fontSize: '12px', color: 'var(--error)' }}>{error}</span>}
+              <button type="submit" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '9px', background: 'var(--accent)', color: '#0A0E0D', fontFamily: 'inherit', fontWeight: 700, fontSize: '15px', padding: '15px 24px', borderRadius: 'var(--radius-pill)', border: 'none', cursor: 'pointer', marginTop: '4px', transition: 'transform 150ms ease' }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.01)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+                <IconDownload size={16} /> Download the free guide
+              </button>
+            </form>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '16px', textAlign: 'center', lineHeight: 1.6 }}>No newsletter. No spam. Just the PDF.</p>
+          </>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '16px 0' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}><IconBigCheck /></div>
+            <h2 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '12px' }}>{name ? `Enjoy it, ${name.trim().split(' ')[0]}!` : 'Download started!'}</h2>
+            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '28px' }}>Your PDF is downloading now. If it doesn't start automatically, check your browser's download bar.</p>
+            <button onClick={onClose} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--surface-raised)', color: 'var(--text)', fontFamily: 'inherit', fontWeight: 600, fontSize: '14px', padding: '12px 24px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--border)', cursor: 'pointer' }}>Close</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Navbar ── */
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+
+  return (
+    <nav className="nav-root" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', height: '64px', background: scrolled ? 'rgba(10,14,13,0.7)' : 'rgba(255,255,255,0.03)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)'}`, transition: 'all 300ms ease' }}>
+      <img src="uploads/Geexweb-Logo.png" alt="Geex Web" style={{ height: '22px', width: 'auto', display: 'block' }} />
+      <a href="https://geexweb.com" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)', fontSize: '13px', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', transition: 'color 150ms' }}
+        onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
+        Back to geexweb.com
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5l7-7M4 2.5h5.5V8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </a>
+    </nav>
+  );
+}
+
+/* ── Hero ── */
+function Hero({ onCtaClick }) {
+  const [showModal, setShowModal] = useState(false);
+  const checks = ['10-min Loom walkthrough', 'Top 3 fixes ranked by impact', 'Mobile teardown screenshots', 'Zero pitch, zero commitment'];
+
+  return (
+    <section className="hero-section" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', paddingTop: '80px' }}>
+      {/* Sticky bg */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: -1, backgroundImage: 'url(uploads/Hero-bg-image-2.jpg)', backgroundSize: 'cover', backgroundPosition: 'center top', backgroundRepeat: 'no-repeat' }} />
+      {/* Top fade */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%', zIndex: 1, background: 'linear-gradient(to bottom, rgba(10,14,13,0.5), transparent)', pointerEvents: 'none' }} />
+
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '740px', width: '100%', padding: '0 24px', textAlign: 'center' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--accent-tint)', border: '1px solid var(--accent-border)', borderRadius: 'var(--radius-pill)', padding: '6px 14px 6px 10px', marginBottom: '32px', animation: 'fadeUp 0.4s ease forwards', opacity: 0 }}>
+          <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--accent)', display: 'inline-block', animation: 'pulse-dot 2s ease-in-out infinite' }} />
+          <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--accent)' }}>Free · 48-hour turnaround · No pitch</span>
+        </div>
+
+        <h1 style={{ fontSize: 'clamp(42px, 6vw, 68px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.02, marginBottom: '24px', animation: 'fadeUp 0.5s 0.1s ease forwards', opacity: 0 }}>
+          A <span style={{ color: 'var(--accent)' }}>free 10-minute</span> audit of your site, landing page, or app.
+        </h1>
+
+        <p style={{ fontSize: '18px', fontWeight: 500, lineHeight: 1.65, color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto 40px', animation: 'fadeUp 0.5s 0.2s ease forwards', opacity: 0 }}>
+          Send me your URL. I'll record a Loom walking through it as a SaaS-CRO designer would — flagging the conversion leaks, mobile breakage, and trust gaps you're too close to see.
+        </p>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px 24px', marginBottom: '48px', animation: 'fadeUp 0.5s 0.3s ease forwards', opacity: 0 }}>
+          {checks.map(c => (
+            <div key={c} style={{ display: 'flex', alignItems: 'center', gap: '7px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+              <span style={{ color: 'var(--accent)', flexShrink: 0 }}><IconCheck size={14} color="#3EE489" /></span>{c}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '14px', animation: 'fadeUp 0.5s 0.4s ease forwards', opacity: 0 }}>
+          <button onClick={onCtaClick} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'var(--accent)', color: '#0A0E0D', fontFamily: 'inherit', fontWeight: 700, fontSize: '16px', padding: '16px 32px', borderRadius: 'var(--radius-pill)', border: 'none', cursor: 'pointer', transition: 'transform 150ms ease' }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.querySelector('.arrow').style.transform = 'translateX(4px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.querySelector('.arrow').style.transform = 'translateX(0)'; }}>
+            Get my free audit <span className="arrow" style={{ transition: 'transform 150ms ease' }}><IconArrowRight size={18} /></span>
+          </button>
+
+          <button onClick={() => setShowModal(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: '9px', background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', color: 'var(--text)', fontFamily: 'inherit', fontWeight: 600, fontSize: '15px', padding: '15px 26px', borderRadius: 'var(--radius-pill)', border: '1px solid rgba(255,255,255,0.14)', cursor: 'pointer', transition: 'background 200ms ease, border-color 200ms ease' }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.24)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'; }}>
+            <IconDownload size={16} /> Download the free guide
+          </button>
+        </div>
+
+        <p style={{ marginTop: '14px', fontSize: '12px', color: 'var(--text-muted)', animation: 'fadeUp 0.5s 0.5s ease forwards', opacity: 0 }}>
+          Prefer to DIY? Grab the self-audit PDF — free, no catch.
+        </p>
+      </div>
+
+      <div style={{ position: 'absolute', bottom: '36px', left: '50%', zIndex: 2, animation: 'bounceArrow 2s ease-in-out infinite', color: 'var(--text-muted)' }}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </div>
+
+      {showModal && <PDFGateModal onClose={() => setShowModal(false)} />}
+    </section>
+  );
+}
+
+/* ── Form ── */
+function AuditForm({ formRef }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [auditType, setAuditType] = useState('');
+  const [traffic, setTraffic] = useState('');
+  const [errors, setErrors] = useState({});
+  const [form, setForm] = useState({ url: '', name: '', email: '', company: '', role: '', goal: '', audience: '', concern: '', extra: '' });
+
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const validate = () => {
+    const e = {};
+    if (!auditType) e.auditType = 'Pick one.';
+    if (!form.url.trim()) e.url = 'URL is required.';
+    if (!form.name.trim()) e.name = 'Your name, please.';
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email required.';
+    if (!form.goal.trim()) e.goal = "Tell me what you're trying to achieve.";
+    if (!form.concern.trim()) e.concern = 'This helps me focus the audit.';
+    return e;
+  };
+  const handleSubmit = e => { e.preventDefault(); const errs = validate(); if (Object.keys(errs).length) { setErrors(errs); return; } setSubmitted(true); };
+
+  const auditTypes = [
+    { id: 'website', label: 'Website', desc: 'Marketing or product homepage', icon: <IconGlobe /> },
+    { id: 'landing', label: 'Landing Page', desc: 'Campaign or sign-up page', icon: <IconLayout /> },
+    { id: 'app', label: 'Mobile App', desc: 'iOS or Android app', icon: <IconPhone /> },
+  ];
+
+  const inp = { width: '100%', background: 'transparent', border: '1px solid var(--border)', borderRadius: 'var(--radius-input)', color: 'var(--text)', fontFamily: 'inherit', fontSize: '15px', padding: '13px 16px', outline: 'none', transition: 'border-color 200ms, background 200ms' };
+  const lbl = { display: 'block', fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', letterSpacing: '0.01em' };
+  const fw = { display: 'flex', flexDirection: 'column' };
+  const foc = e => { e.target.style.borderColor = '#3EE489'; e.target.style.background = 'rgba(62,228,137,0.04)'; };
+  const blr = (err) => e => { e.target.style.borderColor = err ? 'var(--error)' : 'var(--border)'; e.target.style.background = 'transparent'; };
+
+  if (submitted) {
+    return (
+      <div ref={formRef} style={{ maxWidth: '640px', margin: '0 auto', padding: '80px 24px', textAlign: 'center', animation: 'scaleIn 0.4s ease forwards' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '28px' }}><IconBigCheck /></div>
+        <h2 style={{ fontSize: '40px', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '16px' }}>Got it, {form.name.split(' ')[0]}.</h2>
+        <p style={{ fontSize: '17px', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '48px' }}>Your audit is on its way to <span style={{ color: 'var(--text)' }}>{form.email}</span> within 48 hours.</p>
+        <div style={{ background: 'rgba(10,14,13,0.82)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-card)', padding: '32px', textAlign: 'left' }}>
+          <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '12px' }}>Want faster?</p>
+          <h3 style={{ fontSize: '22px', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '10px' }}>Skip the wait. Book a 15-min call.</h3>
+          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '24px' }}>I'll do the audit live with you — ask questions in real time, leave with a clear action list.</p>
+          <a href="https://cal.com/haseeb-ansari/30min" target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--accent)', color: '#0A0E0D', fontFamily: 'inherit', fontWeight: 700, fontSize: '15px', padding: '13px 24px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
+            Book a 15-min call <IconArrowRight size={16} />
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={formRef} style={{ maxWidth: '680px', margin: '0 auto', padding: '0 24px' }}>
+      <div className="form-card" style={{ background: 'rgba(10,14,13,0.82)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '48px' }}>
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '8px' }}>Tell me what to look at.</h2>
+        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '40px' }}>Takes about 2 minutes. The more context you give, the sharper the audit.</p>
+
+        <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+          <div style={fw}>
+            <label style={lbl}>What are you submitting? <span style={{ color: 'var(--accent)' }}>*</span></label>
+            <div className="audit-type-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '10px' }}>
+              {auditTypes.map(t => (
+                <button type="button" key={t.id} onClick={() => { setAuditType(t.id); setErrors(er => ({ ...er, auditType: '' })); }} style={{ background: auditType === t.id ? 'var(--accent-tint)' : 'var(--surface)', border: `1px solid ${auditType === t.id ? 'var(--accent-border)' : 'var(--border)'}`, borderRadius: 'var(--radius-card)', padding: '18px 14px', cursor: 'pointer', textAlign: 'left', color: 'var(--text)', fontFamily: 'inherit', transition: 'all 200ms ease' }}
+                  onMouseEnter={e => { if (auditType !== t.id) e.currentTarget.style.borderColor = 'var(--border-hover)'; }}
+                  onMouseLeave={e => { if (auditType !== t.id) e.currentTarget.style.borderColor = 'var(--border)'; }}>
+                  <div style={{ color: auditType === t.id ? 'var(--accent)' : 'var(--text-secondary)', marginBottom: '10px' }}>{t.icon}</div>
+                  <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }}>{t.label}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.4 }}>{t.desc}</div>
+                </button>
+              ))}
+            </div>
+            {errors.auditType && <span style={{ fontSize: '12px', color: 'var(--error)', marginTop: '6px' }}>{errors.auditType}</span>}
+          </div>
+
+          <div style={fw}>
+            <label style={lbl}>{auditType === 'app' ? 'App Store / Play Store link' : 'Your URL'} <span style={{ color: 'var(--accent)' }}>*</span></label>
+            <input type="url" value={form.url} placeholder={auditType === 'app' ? 'https://apps.apple.com/...' : 'https://yoursite.com'} onChange={e => { set('url', e.target.value); setErrors(er => ({ ...er, url: '' })); }} style={{ ...inp, borderColor: errors.url ? 'var(--error)' : undefined }} onFocus={foc} onBlur={blr(errors.url)} />
+            {errors.url && <span style={{ fontSize: '12px', color: 'var(--error)', marginTop: '6px' }}>{errors.url}</span>}
+          </div>
+
+          <div className="form-grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={fw}>
+              <label style={lbl}>Name <span style={{ color: 'var(--accent)' }}>*</span></label>
+              <input type="text" value={form.name} placeholder="Tom Hanks" onChange={e => { set('name', e.target.value); setErrors(er => ({ ...er, name: '' })); }} style={{ ...inp, borderColor: errors.name ? 'var(--error)' : undefined }} onFocus={foc} onBlur={blr(errors.name)} />
+              {errors.name && <span style={{ fontSize: '12px', color: 'var(--error)', marginTop: '6px' }}>{errors.name}</span>}
+            </div>
+            <div style={fw}>
+              <label style={lbl}>Email <span style={{ color: 'var(--accent)' }}>*</span></label>
+              <input type="email" value={form.email} placeholder="you@company.com" onChange={e => { set('email', e.target.value); setErrors(er => ({ ...er, email: '' })); }} style={{ ...inp, borderColor: errors.email ? 'var(--error)' : undefined }} onFocus={foc} onBlur={blr(errors.email)} />
+              {errors.email && <span style={{ fontSize: '12px', color: 'var(--error)', marginTop: '6px' }}>{errors.email}</span>}
+            </div>
+          </div>
+
+          <div className="form-grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={fw}>
+              <label style={lbl}>Company <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(optional)</span></label>
+              <input type="text" value={form.company} placeholder="Acme Inc." onChange={e => set('company', e.target.value)} style={inp} onFocus={foc} onBlur={blr(false)} />
+            </div>
+            <div style={fw}>
+              <label style={lbl}>Role <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(optional)</span></label>
+              <input type="text" value={form.role} placeholder="Founder / CPO / Designer" onChange={e => set('role', e.target.value)} style={inp} onFocus={foc} onBlur={blr(false)} />
+            </div>
+          </div>
+
+          <div style={fw}>
+            <label style={lbl}>Primary goal <span style={{ color: 'var(--accent)' }}>*</span></label>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '8px' }}>e.g. "more trial sign-ups", "lower bounce rate", "improve mobile conversion"</p>
+            <input type="text" value={form.goal} placeholder="What's the one thing you most want to improve?" onChange={e => { set('goal', e.target.value); setErrors(er => ({ ...er, goal: '' })); }} style={{ ...inp, borderColor: errors.goal ? 'var(--error)' : undefined }} onFocus={foc} onBlur={blr(errors.goal)} />
+            {errors.goal && <span style={{ fontSize: '12px', color: 'var(--error)', marginTop: '6px' }}>{errors.goal}</span>}
+          </div>
+
+          <div style={fw}>
+            <label style={lbl}>Target audience <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(optional)</span></label>
+            <input type="text" value={form.audience} placeholder="e.g. B2B SaaS founders, SMB ops teams" onChange={e => set('audience', e.target.value)} style={inp} onFocus={foc} onBlur={blr(false)} />
+          </div>
+
+          <div style={fw}>
+            <label style={lbl}>Current monthly visitors</label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {['<1k', '1–10k', '10–50k', '50k+'].map(t => (
+                <button type="button" key={t} onClick={() => setTraffic(t)} style={{ flex: 1, padding: '10px 8px', borderRadius: '10px', background: traffic === t ? 'var(--accent-tint)' : 'var(--surface)', border: `1px solid ${traffic === t ? 'var(--accent-border)' : 'var(--border)'}`, color: traffic === t ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'inherit', fontWeight: 600, fontSize: '13px', cursor: 'pointer', transition: 'all 200ms ease' }}>{t}</button>
+              ))}
+            </div>
+          </div>
+
+          <div style={fw}>
+            <label style={lbl}>Biggest concern about your current UI <span style={{ color: 'var(--accent)' }}>*</span></label>
+            <textarea value={form.concern} rows={3} placeholder="What's been bugging you or your team? What feedback have users given?" onChange={e => { set('concern', e.target.value); setErrors(er => ({ ...er, concern: '' })); }} style={{ ...inp, resize: 'vertical', lineHeight: 1.6, borderColor: errors.concern ? 'var(--error)' : undefined }} onFocus={foc} onBlur={blr(errors.concern)} />
+            {errors.concern && <span style={{ fontSize: '12px', color: 'var(--error)', marginTop: '6px' }}>{errors.concern}</span>}
+          </div>
+
+          <div style={fw}>
+            <label style={lbl}>Anything else? <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(optional)</span></label>
+            <textarea value={form.extra} rows={2} placeholder="Logins, test credentials, context I should know..." onChange={e => set('extra', e.target.value)} style={{ ...inp, resize: 'vertical', lineHeight: 1.6 }} onFocus={foc} onBlur={blr(false)} />
+          </div>
+
+          <button type="submit" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'var(--accent)', color: '#0A0E0D', fontFamily: 'inherit', fontWeight: 700, fontSize: '17px', padding: '18px 32px', borderRadius: 'var(--radius-pill)', border: 'none', cursor: 'pointer', transition: 'transform 150ms ease', marginTop: '4px' }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.01)'; e.currentTarget.querySelector('.ba').style.transform = 'translateX(4px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.querySelector('.ba').style.transform = 'translateX(0)'; }}>
+            Send me my free audit <span className="ba" style={{ transition: 'transform 150ms ease' }}><IconArrowRight size={18} /></span>
+          </button>
+
+          <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginTop: '-8px' }}>
+            By submitting you agree to receive your audit by email. No newsletter. No spam.<br />I read every submission personally.
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+/* ── Testimonials ── */
+function SocialProof() {
+  const testimonials = [
+    { quote: "He's an awesome and talented designer. I highly recommend his work, friendly personality and dedication to doing a great job.", name: "Kara Howard", role: "Founder of SI", rating: 5, featured: false },
+    { quote: "This guy absolutely nailed the design… I am so thrilled with it. It was definitely worth everything. We worked great together and it shows off through his design skills. Absolutely mega talented designer.", name: "Patrick", role: "Founder of TradeXess", rating: 5, featured: true },
+    { quote: "He's an awesome and talented designer. I highly recommend his work, friendly personality and dedication to doing a great job.", name: "Eric Wills", role: "Rochdale Copa LLC", rating: 5, featured: false },
+    { quote: "Haseeb was wonderful to work with. Great design vision and is extremely pleasant. Will work with again!", name: "Tom", role: "Acadia East", rating: 5, featured: false },
+  ];
+
+  return (
+    <section className="testimonials-section" style={{ padding: '80px 40px', background: 'transparent' }}>
+      <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+        <div className="testimonials-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px', marginBottom: '56px' }}>
+          <div>
+            <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '12px' }}>Testimonials</p>
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.1, color: '#FFFFFF' }}>
+              More than <span style={{ fontStyle: 'italic', color: 'var(--text-secondary)' }}>words.</span><br />Experiences shared.
+            </h2>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(10,14,13,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', padding: '12px 16px', alignSelf: 'flex-start' }}>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '3px' }}>Got a project in mind? Let's chat!</div>
+              <a href="mailto:hello@geexweb.com" style={{ fontSize: '14px', fontWeight: 700, color: 'var(--accent)', textDecoration: 'none' }}>hello@geexweb.com</a>
+            </div>
+            <Avatar size={44} />
+          </div>
+        </div>
+
+        <div className="testimonials-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '16px', alignItems: 'start' }}>
+          {testimonials.map((t, i) => (
+            <div key={i} style={{ background: 'rgba(10,14,13,0.78)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: `1px solid ${t.featured ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '18px', padding: '28px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'border-color 250ms ease, transform 250ms ease', cursor: 'default' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.22)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = t.featured ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+              <p style={{ fontSize: '15px', lineHeight: 1.75, color: '#FFFFFF', marginBottom: '28px', fontWeight: 500, letterSpacing: '-0.005em' }}>{t.quote}</p>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '-0.01em' }}>{t.name}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>{t.role}</div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(62,228,137,0.1)', border: '1px solid var(--accent-border)', borderRadius: '8px', padding: '5px 9px' }}>
+                  <IconStar /><span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--accent)' }}>{t.rating}.0</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── FAQ ── */
+function FAQ() {
+  const [open, setOpen] = useState(null);
+  const items = [
+    { q: "Is this actually free? What's the catch?", a: "No catch. I do these because it keeps me sharp and occasionally leads to paid work — but only if you ask. You won't get a pitch. You'll get an honest audit, and that's it." },
+    { q: "How long until I get the audit?", a: "Within 48 hours on business days. Usually faster. You'll get a Loom link by email — watch it in your own time." },
+    { q: "Will you sign an NDA?", a: "Yes, if your product is early-stage or you're worried about confidentiality. Just mention it in the form and I'll send one before I start." },
+    { q: "Do you audit early-stage products with no traffic?", a: "Absolutely. Sometimes those are the most useful audits — catching structural problems before they're baked in. No traffic required." },
+  ];
+
+  const cardStyle = { background: 'rgba(10,14,13,0.75)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-card)', overflow: 'hidden', transition: 'border-color 200ms ease' };
+
+  return (
+    <section className="faq-section" style={{ padding: '72px 40px 120px', background: 'transparent' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto' }}>
+        <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', textAlign: 'center', marginBottom: '12px' }}>FAQ</p>
+        <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 800, letterSpacing: '-0.03em', textAlign: 'center', marginBottom: '8px' }}>
+          Your questions, <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Answered!</span>
+        </h2>
+        <p style={{ fontSize: '15px', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.6, marginBottom: '48px' }}>Find answers to common questions about my design process, services etc…</p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
+          {items.map((item, i) => (
+            <div key={i} style={cardStyle}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--border-hover)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}>
+              <button onClick={() => setOpen(open === i ? null : i)} style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 26px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', fontFamily: 'inherit', fontWeight: 600, fontSize: '15px', textAlign: 'left', gap: '16px' }}>
+                <span>{item.q}</span>
+                <span style={{ transform: open === i ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 250ms ease', flexShrink: 0, color: 'var(--text-muted)' }}><IconChevronDown size={18} /></span>
+              </button>
+              {open === i && (
+                <div style={{ padding: '0 26px 20px', animation: 'fadeIn 0.2s ease' }}>
+                  <p style={{ fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', lineHeight: 1.7 }}>{item.a}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* View more */}
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <a href="https://geexweb.com" target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 150ms ease' }}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
+            Have more questions? View all on geexweb.com
+            <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5l7-7M4 2.5h5.5V8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </a>
+        </div>
+
+        {/* Book a call card */}
+        <div className="faq-book-card" style={{ background: 'rgba(10,14,13,0.75)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '36px 32px', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '160px', height: '160px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(62,228,137,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+          <div style={{ marginBottom: '20px', position: 'relative', display: 'inline-block', width: 'fit-content' }}>
+            <Avatar size={56} />
+            <div style={{ position: 'absolute', bottom: '2px', right: '2px', width: '12px', height: '12px', borderRadius: '50%', background: 'var(--accent)', border: '2px solid #0A0E0D', animation: 'pulse-dot 2.5s ease-in-out infinite' }} />
+          </div>
+
+          <h3 style={{ fontSize: '30px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '12px', lineHeight: 1.2 }}>Still have some<br />questions?</h3>
+          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '28px' }}>Jump on a quick 15-minute call. I'll answer anything — no obligation, no sales pitch.</p>
+
+          <a href="https://cal.com/haseeb-ansari/30min" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '9px', background: '#FFFFFF', color: '#0A0E0D', fontFamily: 'inherit', fontWeight: 700, fontSize: '15px', padding: '15px 24px', borderRadius: 'var(--radius-pill)', textDecoration: 'none', transition: 'transform 150ms ease, background 150ms ease', letterSpacing: '-0.01em' }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.01)'; e.currentTarget.style.background = '#e8e8e8'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = '#FFFFFF'; }}>
+            <IconCalendar /> Book a call
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Footer ── */
+function Footer() {
+  return (
+    <footer className="footer-root" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', padding: '32px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', background: 'rgba(10,14,13,0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+      <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>© Geex Web · Designed by Haseeb Ansari</p>
+      <div style={{ display: 'flex', gap: '24px' }}>
+        {[['geexweb.com', 'https://geexweb.com'], ['hello@geexweb.com', 'mailto:hello@geexweb.com']].map(([label, href]) => (
+          <a key={label} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer"
+            style={{ fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 150ms' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>{label}</a>
+        ))}
+      </div>
+    </footer>
+  );
+}
+
+/* ── App ── */
+function App() {
+  const formRef = useRef(null);
+  const scrollToForm = () => {
+    if (formRef.current) {
+      const y = formRef.current.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <>
+      <Navbar />
+      <Hero onCtaClick={scrollToForm} />
+      <section className="form-section" style={{ background: 'transparent', paddingTop: '96px', paddingBottom: '64px' }}>
+        <p style={{ textAlign: 'center', fontSize: '11px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '16px' }}>The audit request</p>
+        <AuditForm formRef={formRef} />
+      </section>
+      <SocialProof />
+      <FAQ />
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
