@@ -206,6 +206,18 @@ function PDFGateModal({ onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) { setError('Please enter a valid email address.'); return; }
+
+    fetch('https://formspree.io/f/xzdynldl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        email,
+        name: name || '(not provided)',
+        source: 'PDF gate (lead magnet)',
+        _subject: 'New PDF guide download — Geex Web',
+      }),
+    }).catch(() => {});
+
     const link = document.createElement('a');
     link.href = 'uploads/Geex-Web-10-Min-SaaS-UIUX-Audit.pdf';
     link.download = 'Geex-Web-SaaS-UIUX-Audit-Guide.pdf';
@@ -380,7 +392,33 @@ function AuditForm({ formRef }) {
     if (!form.concern.trim()) e.concern = 'This helps me focus the audit.';
     return e;
   };
-  const handleSubmit = e => { e.preventDefault(); const errs = validate(); if (Object.keys(errs).length) { setErrors(errs); return; } setSubmitted(true); };
+  const handleSubmit = e => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+
+    fetch('https://formspree.io/f/xzdynldl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        email: form.email,
+        name: form.name,
+        url: form.url,
+        auditType,
+        company: form.company,
+        role: form.role,
+        goal: form.goal,
+        audience: form.audience,
+        traffic,
+        concern: form.concern,
+        extra: form.extra,
+        source: 'Audit request form',
+        _subject: `New audit request from ${form.name} — ${auditType}`,
+      }),
+    }).catch(() => {});
+
+    setSubmitted(true);
+  };
 
   const auditTypes = [
     { id: 'website', label: 'Website', desc: 'Marketing or product homepage', icon: <IconGlobe /> },
