@@ -319,7 +319,7 @@ function Navbar() {
 /* ── Hero ── */
 function Hero({ onCtaClick }) {
   const [showModal, setShowModal] = useState(false);
-  const checks = ['10-min Loom walkthrough', 'Top 3 fixes ranked by impact', 'Mobile teardown screenshots', 'Zero pitch, zero commitment'];
+  const checks = ['10-min Loom walkthrough', 'Top 3 fixes ranked by impact', 'Mobile teardown screenshots', 'Delivered in 48 hours'];
 
   return (
     <section className="hero-section" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', paddingTop: '80px' }}>
@@ -531,7 +531,7 @@ function AuditForm({ formRef }) {
 
           <div style={fw}>
             <label style={lbl}>Biggest concern about your current UI <span style={{ color: 'var(--accent)' }}>*</span></label>
-            <textarea value={form.concern} rows={3} placeholder="What's been bugging you or your team? What feedback have users given?" onChange={e => { set('concern', e.target.value); setErrors(er => ({ ...er, concern: '' })); }} style={{ ...inp, resize: 'vertical', lineHeight: 1.6, borderColor: errors.concern ? 'var(--error)' : undefined }} onFocus={foc} onBlur={blr(errors.concern)} />
+            <textarea value={form.concern} rows={3} placeholder="What's been bugging you about it lately?" onChange={e => { set('concern', e.target.value); setErrors(er => ({ ...er, concern: '' })); }} style={{ ...inp, resize: 'vertical', lineHeight: 1.6, borderColor: errors.concern ? 'var(--error)' : undefined }} onFocus={foc} onBlur={blr(errors.concern)} />
             {errors.concern && <span style={{ fontSize: '12px', color: 'var(--error)', marginTop: '6px' }}>{errors.concern}</span>}
           </div>
 
@@ -571,7 +571,7 @@ function SocialProof() {
           <div>
             <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '12px' }}>Testimonials</p>
             <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.1, color: '#FFFFFF' }}>
-              More than <span style={{ fontStyle: 'italic', color: 'var(--text-secondary)' }}>words.</span><br />Experiences shared.
+              Real Audits. <span style={{ fontStyle: 'italic', color: 'var(--text-secondary)' }}>Real Founders.</span><br />Real Fixes.
             </h2>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(10,14,13,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', padding: '12px 16px', alignSelf: 'flex-start' }}>
